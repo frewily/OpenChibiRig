@@ -8,6 +8,7 @@ from pathlib import Path
 from openchibirig.rigging.errors import RiggingError
 from openchibirig.rigging.project_writer import write_project
 from openchibirig.runtime.compositor import CompositionError, compose_layers
+from openchibirig.runtime.preview import PreviewError, render_preview
 from openchibirig.validation.input_validator import validate_input
 
 
@@ -25,6 +26,11 @@ def _parser() -> argparse.ArgumentParser:
     rig = commands.add_parser("rig", help="生成基础绑定项目 JSON")
     rig.add_argument("input", type=Path)
     rig.add_argument("--output", "-o", type=Path, required=True)
+
+    preview = commands.add_parser("preview", help="按参数生成预览图")
+    preview.add_argument("input", type=Path)
+    preview.add_argument("--set", dest="values", action="append", default=[])
+    preview.add_argument("--output", "-o", type=Path, required=True)
     return parser
 
 
@@ -49,6 +55,23 @@ def main(argv: Sequence[str] | None = None) -> int:
         for warning in project.warnings:
             print(f"WARNING: {warning}")
         print(f"已生成项目：{args.output}")
+        return 0
+
+    if args.command == "preview":
+        values: dict[str, float] = {}
+        try:
+            for assignment in args.values:
+                name, separator, raw_value = assignment.partition("=")
+                if not separator or not name:
+                    raise PreviewError(f"参数格式无效：{assignment}，应为 name=value。")
+                values[name] = float(raw_value)
+            image = render_preview(args.input, values)
+        except (PreviewError, ValueError) as exc:
+            print(f"生成预览失败：{exc}", file=sys.stderr)
+            return 1
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        image.save(args.output, format="PNG")
+        print(f"已生成预览：{args.output}")
         return 0
 
     try:

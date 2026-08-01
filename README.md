@@ -40,6 +40,19 @@ python3 -m venv .venv
 
 该命令目前生成参数与动作声明，包括眨眼、口型、视线、呼吸、头部倾斜和头发摆动能力；它还不会执行真正的网格变形。
 
+按参数生成预览图：
+
+```bash
+.venv/bin/openchibirig preview path/to/character \
+  --set gaze.x=0.5 \
+  --set mouth.open=0.8 \
+  --set breath=0.4 \
+  --set head.tilt=0.2 \
+  --output outputs/motion-preview.png
+```
+
+该预览使用图层级平移、缩放和旋转验证参数链路。它不是最终的网格变形渲染器，粗糙蒙版产生的接缝需要在人工修层后重新检查。
+
 当前实现只支持目录输入。ZIP、PSD、单图拆层、网格和绑定仍不在本切片范围内。
 
 ## 设计原则
