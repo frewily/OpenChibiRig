@@ -32,6 +32,14 @@ python3 -m venv .venv
 .venv/bin/openchibirig compose path/to/character --output outputs/preview.png
 ```
 
+生成运行时无关的基础绑定项目：
+
+```bash
+.venv/bin/openchibirig rig path/to/character --output outputs/project.json
+```
+
+该命令目前生成参数与动作声明，包括眨眼、口型、视线、呼吸、头部倾斜和头发摆动能力；它还不会执行真正的网格变形。
+
 当前实现只支持目录输入。ZIP、PSD、单图拆层、网格和绑定仍不在本切片范围内。
 
 ## 设计原则
