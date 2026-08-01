@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../../schemas/input-manifest.schema.json",
+  "spec_version": "0.1",
+  "character_id": "generic_chibi_fixture",
+  "display_name": "Generic Chibi Fixture",
+  "canvas": {
+    "width": 1024,
+    "height": 1024,
+    "color_space": "srgb"
+  },
+  "orientation": {
+    "view": "front",
+    "left_right_basis": "character"
+  },
+  "layers": [
+    {
+      "id": "placeholder_body",
+      "role": "body.base",
+      "path": "layers/020_body.png",
+      "draw_order": 20
+    }
+  ],
+  "license": {
+    "redistribution": "allowed"
+  },
+  "notes": [
+    "后续使用项目自制的几何图形替换占位清单，形成可公开分发的完整夹具。"
+  ]
+}

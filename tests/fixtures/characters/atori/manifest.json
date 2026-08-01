@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../../schemas/input-manifest.schema.json",
+  "spec_version": "0.1",
+  "character_id": "atori_milestone0",
+  "display_name": "亚托莉（Milestone 0 本地夹具）",
+  "canvas": {
+    "width": 2048,
+    "height": 2048,
+    "color_space": "srgb"
+  },
+  "orientation": {
+    "view": "front",
+    "left_right_basis": "character"
+  },
+  "layers": [
+    {
+      "id": "placeholder_body",
+      "role": "body.base",
+      "path": "layers/020_body.png",
+      "draw_order": 20
+    }
+  ],
+  "license": {
+    "redistribution": "unconfirmed"
+  },
+  "notes": [
+    "该清单只用于固定目录结构；补齐获授权素材和基础角色后才能作为有效自动绑定输入。"
+  ]
+}

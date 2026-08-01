@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openchibirig.dev/schemas/input-manifest-0.1.schema.json",
+  "title": "OpenChibiRig input manifest v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "spec_version",
+    "character_id",
+    "display_name",
+    "canvas",
+    "orientation",
+    "layers"
+  ],
+  "properties": {
+    "$schema": {"type": "string"},
+    "spec_version": {"const": "0.1"},
+    "character_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$"
+    },
+    "display_name": {"type": "string", "minLength": 1, "maxLength": 128},
+    "canvas": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height", "color_space"],
+      "properties": {
+        "width": {"type": "integer", "minimum": 1, "maximum": 16384},
+        "height": {"type": "integer", "minimum": 1, "maximum": 16384},
+        "color_space": {"const": "srgb"}
+      }
+    },
+    "orientation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["view", "left_right_basis"],
+      "properties": {
+        "view": {"enum": ["front", "near_front"]},
+        "left_right_basis": {"const": "character"}
+      }
+    },
+    "layers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/layer"}
+    },
+    "landmarks": {
+      "type": "object",
+      "propertyNames": {"pattern": "^[a-z][a-z0-9_.-]*$"},
+      "additionalProperties": {"$ref": "#/$defs/point"}
+    },
+    "license": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["redistribution"],
+      "properties": {
+        "redistribution": {"enum": ["allowed", "prohibited", "unconfirmed"]},
+        "source": {"type": "string", "minLength": 1}
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    }
+  },
+  "$defs": {
+    "point": {
+      "type": "array",
+      "prefixItems": [
+        {"type": "number", "minimum": 0},
+        {"type": "number", "minimum": 0}
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "layer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "path", "draw_order"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9_-]{0,63}$"},
+        "role": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^layers/[A-Za-z0-9][A-Za-z0-9_.-]*\\.png$"
+        },
+        "draw_order": {"type": "integer"},
+        "anchor": {"$ref": "#/$defs/point"},
+        "visible": {"type": "boolean", "default": true}
+      }
+    }
+  }
+}

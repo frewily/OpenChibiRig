@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+dist/
+build/
+.DS_Store
+
+# 本地设计参考可能受第三方版权限制，默认不进入公开仓库。
+references/private/*
+!references/private/README.md
+
+# 本地生成的预览与构建报告。
+outputs/*
+!outputs/.gitkeep
+
+# 测试角色原始素材默认不入库；仅提交 README、清单和明确获授权的夹具。
+tests/fixtures/characters/*/layers/*
+!tests/fixtures/characters/*/layers/.gitkeep
