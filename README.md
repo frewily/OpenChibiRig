@@ -53,7 +53,18 @@ python3 -m venv .venv
 
 该预览使用图层级平移、缩放和旋转验证参数链路。它不是最终的网格变形渲染器，粗糙蒙版产生的接缝需要在人工修层后重新检查。
 
-当前实现只支持目录输入。ZIP、PSD、单图拆层、网格和绑定仍不在本切片范围内。
+See-through PSD 导入（可选）：
+
+```bash
+pip install -e '.[psd]'
+.venv/bin/openchibirig import-psd path/to/see-through-output.psd \
+  --output references/private/atori-see-through
+.venv/bin/openchibirig validate references/private/atori-see-through
+```
+
+该命令只负责将分层 PSD 标准化为 `manifest.json` 和 RGBA PNG 图层，不在本项目内运行 See-through 推理，也不保证直接得到可商用的 Live2D 模型。无法识别的 PSD 图层会保留为 `custom.*` 并显示警告；缺少基础动作角色时会生成隐藏透明占位层，仍需人工检查和修层。
+
+当前实现的标准运行输入是图层目录；ZIP、单图拆层、网格和绑定仍不在本切片范围内。PSD 需要先通过可选的 `import-psd` 适配器转换。
 
 ## 设计原则
 
