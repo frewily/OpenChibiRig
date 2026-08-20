@@ -77,6 +77,20 @@ def map_layer_name(name: str) -> LayerMapping:
         return LayerMapping(normalized, role)
     if normalized == "mouth" or normalized.endswith("_mouth"):
         return LayerMapping(normalized, "mouth.base")
+    if normalized == "eyebrow" or normalized.endswith("_eyebrow"):
+        return LayerMapping(normalized, "face.eyebrow")
+    if normalized == "nose" or normalized.endswith("_nose"):
+        return LayerMapping(normalized, "face.nose")
+    if normalized in {"ear", "ears"} or normalized.endswith("_ears"):
+        return LayerMapping(normalized, "face.ears")
+    if normalized == "neck" or normalized.endswith("_neck"):
+        return LayerMapping(normalized, "body.neck")
+    if normalized == "headwear" or normalized.endswith("_headwear"):
+        return LayerMapping(normalized, "accessory.headwear")
+    if normalized == "handwear" or normalized.endswith("_handwear"):
+        return LayerMapping(normalized, "clothes.handwear")
+    if normalized == "legwear" or normalized.endswith("_legwear"):
+        return LayerMapping(normalized, "clothes.legwear")
     if any(token in normalized for token in ("topwear", "clothes", "cloth", "outfit")):
         return LayerMapping(normalized, "clothes.main")
     if normalized in {"body", "skin"} or normalized.endswith("_body"):

@@ -22,6 +22,13 @@ from openchibirig.importers.psd import PsdImportError, import_psd, map_layer_nam
         ("topwear", "clothes.main"),
         ("skin", "body.base"),
         ("left iris", "eye.left.iris"),
+        ("eyebrow", "face.eyebrow"),
+        ("nose", "face.nose"),
+        ("ears", "face.ears"),
+        ("neck", "body.neck"),
+        ("headwear", "accessory.headwear"),
+        ("handwear", "clothes.handwear"),
+        ("legwear", "clothes.legwear"),
     ],
 )
 def test_map_layer_name(name: str, expected: str) -> None:
