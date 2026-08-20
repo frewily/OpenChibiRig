@@ -5,6 +5,7 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 
+from openchibirig.importers.psd import PsdImportError, import_psd
 from openchibirig.rigging.errors import RiggingError
 from openchibirig.rigging.project_writer import write_project
 from openchibirig.runtime.compositor import CompositionError, compose_layers
@@ -31,6 +32,10 @@ def _parser() -> argparse.ArgumentParser:
     preview.add_argument("input", type=Path)
     preview.add_argument("--set", dest="values", action="append", default=[])
     preview.add_argument("--output", "-o", type=Path, required=True)
+
+    import_psd_parser = commands.add_parser("import-psd", help="将分层 PSD 导入标准图层目录")
+    import_psd_parser.add_argument("input", type=Path)
+    import_psd_parser.add_argument("--output", "-o", type=Path, required=True)
     return parser
 
 
@@ -72,6 +77,17 @@ def main(argv: Sequence[str] | None = None) -> int:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         image.save(args.output, format="PNG")
         print(f"已生成预览：{args.output}")
+        return 0
+
+    if args.command == "import-psd":
+        try:
+            report = import_psd(args.input, args.output)
+        except PsdImportError as exc:
+            print(f"导入 PSD 失败：{exc}", file=sys.stderr)
+            return 1
+        for warning in report.warnings:
+            print(f"WARNING: {warning}")
+        print(f"已导入 PSD：{report.output_root}（{report.layer_count} 个图层）")
         return 0
 
     try:
