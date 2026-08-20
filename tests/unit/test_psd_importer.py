@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import sys
 import types
 from dataclasses import dataclass
@@ -99,3 +100,17 @@ def test_import_writes_full_canvas_rgba_layers(monkeypatch: pytest.MonkeyPatch, 
     assert '"draw_order": 10' in manifest_text
     assert '"visible": false' in manifest_text
     assert any("Sparkle Ribbon" in warning for warning in report.warnings)
+
+
+def test_psd_descendant_order_is_preserved_for_draw_order(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    source = tmp_path / "sample.psd"
+    source.touch()
+    install_fake_psd(monkeypatch)
+
+    import_psd(source, tmp_path / "out")
+
+    manifest = json.loads((tmp_path / "out/manifest.json").read_text(encoding="utf-8"))
+    assert manifest["layers"][0]["role"] == "face.base"
+    assert manifest["layers"][1]["role"] == "custom.sparkle_ribbon"

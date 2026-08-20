@@ -96,7 +96,7 @@ def _iter_leaf_layers(psd: object) -> list[object]:
     layers = [layer for layer in descendants() if not layer.is_group()]
     if not layers:
         raise PsdImportError("PSD 没有可导出的叶子图层。")
-    return list(reversed(layers))
+    return layers
 
 
 def _full_canvas_rgba(layer: object, width: int, height: int) -> Image.Image:
